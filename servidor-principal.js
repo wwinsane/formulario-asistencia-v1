@@ -22,8 +22,8 @@ if (!fs.existsSync(excelPath)) {
 // Middleware para leer formularios
 app.use(express.urlencoded({ extended: true }));
 
-// Carpeta pública para archivos estáticos
-app.use(express.static(path.join(__dirname, 'public', 'sitio')));
+// **MODIFICACIÓN**: Servir archivos estáticos desde la carpeta 'public' completa
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta raíz que sirve el formulario HTML
 app.get('/', (req, res) => {

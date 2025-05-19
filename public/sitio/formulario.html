@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmación de Asistencia</title>
-    <style>
-        /* Estilos generales */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmación de Asistencia</title>
+</head>
+<body>
+  <h1>Confirmación de Asistencia</h1>
 
-        h1 {
-            color: #333;
-            font-size: 2rem
+  <form action="/enviar" method="POST">
+    <label for="nombre">Nombre:</label><br>
+    <input type="text" id="nombre" name="nombre" required><br><br>
+
+    <label for="asistencia">¿Asistirás?</label><br>
+    <select id="asistencia" name="asistencia" required>
+      <option value="">Selecciona una opción</option>
+      <option value="Sí">Sí</option>
+      <option value="No">No</option>
+    </select><br><br>
+
+    <label for="deseo">Escribe un deseo:</label><br>
+    <textarea id="deseo" name="deseo" rows="4" cols="30" required></textarea><br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
+</body>
+</html>
