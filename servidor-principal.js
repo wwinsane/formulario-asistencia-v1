@@ -9,7 +9,8 @@ const app = express();
 // Si no está definido, usa el puerto 3000 (para el entorno local)
 const port = process.env.PORT || 3000;
 
-const excelPath = path.join(__dirname, 'datos-asistencia.xlsx');
+// Usar path.resolve() para garantizar la ruta correcta
+const excelPath = path.resolve(__dirname, 'datos-asistencia.xlsx');
 
 // Crear archivo Excel si no existe
 if (!fs.existsSync(excelPath)) {
@@ -22,7 +23,7 @@ if (!fs.existsSync(excelPath)) {
 // Middleware para leer formularios
 app.use(express.urlencoded({ extended: true }));
 
-// **MODIFICACIÓN**: Servir archivos estáticos desde la carpeta 'public' completa
+// Servir archivos estáticos desde la carpeta 'public' completa
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta raíz que sirve el formulario HTML
@@ -32,10 +33,14 @@ app.get('/', (req, res) => {
 
 // Función para guardar los datos en el Excel
 function guardarRespuesta(nombre, asistencia, deseo) {
+    console.log("Leyendo archivo Excel:", excelPath);
     const libro = xlsx.readFile(excelPath);
-    const hoja = libro.Sheets['Asistentes'];
+    const hoja = libro.Sheets['Asistentes'] || {}; // Asegúrate de que la hoja existe
     const datos = xlsx.utils.sheet_to_json(hoja);
 
+    console.log("Datos antes de agregar:", datos);
+
+    // Insertar nueva respuesta
     datos.push({
         nombre,
         asistencia,
@@ -43,11 +48,14 @@ function guardarRespuesta(nombre, asistencia, deseo) {
         fecha: new Date().toLocaleString()
     });
 
+    // Convertir los datos a la hoja de Excel
     const nuevaHoja = xlsx.utils.json_to_sheet(datos);
     libro.Sheets['Asistentes'] = nuevaHoja;
 
     try {
+        console.log("Guardando datos en Excel...");
         xlsx.writeFile(libro, excelPath);
+        console.log("Datos guardados correctamente.");
     } catch (error) {
         console.error('❌ Error al guardar en Excel:', error.message);
     }
